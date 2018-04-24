@@ -18,12 +18,11 @@ jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 import json
 from rest_framework.authtoken.models import Token
 class Registration(generics.CreateAPIView):
+
     serializer_class = RegistrationSerialzier
     queryset = ServiceProviders
 
 
-@authentication_classes([])
-@permission_classes([])
 def AuthLoginAPIView(request):
     username = request.GET.get('username', None)
     password = request.GET.get('password', None)
@@ -31,14 +30,14 @@ def AuthLoginAPIView(request):
     if username is not None and password is not None:
         try:
 
-            u = ServiceProviders.objects.get(username_field=username, password_field=password)
+            u = ServiceProviders.objects.get(username=username, password=password)
             print(u)
             print('hi')
             payload = jwt_payload_handler(u)
             print (payload)
             token = jwt_encode_handler(payload)
             print (token)
-            return JsonResponse({'token': token, 'role': u.role}, content_type='application/json')
+            return JsonResponse({'token': token, 'id': u.id}, content_type='application/json')
         except:
             return HttpResponse('credential didn\'t match', status=HTTP_400_BAD_REQUEST)
     else:
