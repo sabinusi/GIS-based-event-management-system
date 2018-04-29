@@ -1,1 +1,0 @@
-web: gunicorn myceremony.wsgi --log-file -

@@ -3,9 +3,13 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
+from rest_framework_swagger.views import get_swagger_view
+
 from serviceProviders import urls
+schema_view=get_swagger_view(title='GISBasedEeventOrganizationSystem')
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^swagger/', schema_view),
     url(r'^serviceProvider/',include(urls))
 ]
 if settings.DEBUG:

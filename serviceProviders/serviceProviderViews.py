@@ -3,8 +3,9 @@ from rest_framework import generics, serializers
 
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
 
-from serviceProviders.models import ServiceProviders
-from serviceProviders.serviceProviderSerializers import RegistrationSerialzier
+from serviceProviders.models import ServiceProviders, Images, Videos
+from serviceProviders.serviceProviderSerializers import RegistrationSerialzier, UploadImagesSerializer, \
+    UploadVideoSerializer
 from django.http import HttpResponse, JsonResponse
 from rest_framework import serializers
 from rest_framework.decorators import permission_classes, authentication_classes
@@ -83,3 +84,9 @@ class CustomJWTSerializer(JSONWebTokenSerializer):
          else:
             msg = ('Account with this email/username does not exists')
             raise serializers.ValidationError(msg)
+class UploadImages(generics.CreateAPIView):
+    queryset = Images
+    serializer_class = UploadImagesSerializer
+class UploadVideo(generics.CreateAPIView):
+    queryset = Videos
+    serializer_class = UploadVideoSerializer
