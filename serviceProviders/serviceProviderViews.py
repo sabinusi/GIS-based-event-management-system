@@ -5,7 +5,8 @@ from rest_framework_jwt.serializers import JSONWebTokenSerializer
 
 from serviceProviders.models import ServiceProviders, Images, Videos
 from serviceProviders.serviceProviderSerializers import RegistrationSerialzier, UploadImagesSerializer, \
-    UploadVideoSerializer
+    UploadVideoSerializer, ListServiceProvidersSerializer, ListImagesSerializer, ListVideosSerializer
+
 from django.http import HttpResponse, JsonResponse
 from rest_framework import serializers
 from rest_framework.decorators import permission_classes, authentication_classes
@@ -90,3 +91,25 @@ class UploadImages(generics.CreateAPIView):
 class UploadVideo(generics.CreateAPIView):
     queryset = Videos
     serializer_class = UploadVideoSerializer
+class ListServiceProviders(generics.ListAPIView):
+    permission_classes =[AllowAny]
+    queryset = ServiceProviders.objects.filter(passed=True)
+    serializer_class = ListServiceProvidersSerializer
+class ListImages(generics.ListAPIView):
+    lookup_url_kwarg = 'service_proviser'
+    def get_queryset(self):
+        service_provider_id=self.kwargs.get(self.lookup_url_kwarg)
+        images=Images.objects.filter(service_proviser=service_provider_id)
+        return  images
+
+    serializer_class = ListImagesSerializer
+class ListAllImages(generics.ListAPIView):
+    permission_classes = [AllowAny]
+
+    queryset = Images.objects.all()
+    serializer_class = ListImagesSerializer
+class ListAllVideos(generics.ListAPIView):
+    permission_classes = [AllowAny]
+
+    queryset = Videos.objects.all()
+    serializer_class = ListVideosSerializer

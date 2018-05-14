@@ -23,7 +23,8 @@ class ServiceProviders(User):
     phone_regex = RegexValidator(regex=r'^\+255?\d{9}$',
                                  message="Phone number must be entered in the format: '+255******'. Up to 9 character is allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=15, blank=True)
-    rates=models.CharField(choices=RATES,max_length=50,default='nonStar'),
+    rates=models.CharField(choices=RATES,max_length=50,default='nonStar')
+    pic_url=models.FileField(upload_to='serviceProviderImages/%Y/%m/%d',blank=True,null=True)
     passed=models.BooleanField(default=False)
 
 
@@ -51,7 +52,7 @@ class Videos(models.Model):
 # this is ereror i will clear it later
 class VideoComments(models.Model):
     comments=models.TextField()
-    video=models.ForeignKey(Videos,on_delete=models.CASCADE,default=0)
+    video=models.ForeignKey(Videos,on_delete=models.CASCADE)
 # delete default 0
     def __str__(self):
         return  self.comments
@@ -75,7 +76,7 @@ class Images(models.Model):
         verbose_name_plural = 'Images'
 class ImageComments(models.Model):
     comments=models.TextField()
-    image=models.ForeignKey(Images,on_delete=models.CASCADE,default=0)
+    image=models.ForeignKey(Images,on_delete=models.CASCADE)
     # delete defail 0
 
     def __str__(self):
@@ -83,29 +84,33 @@ class ImageComments(models.Model):
     class Meta:
         verbose_name_plural = 'ImageCommments'
 
-class ServiceName(models.Model):
-     name = models.CharField(max_length=100)
-     def __str__(self):
-         return self.name
-     class Meta:
-         verbose_name_plural = 'ServiceNames'
 
+class ServiceName(models.Model):
+    name = models.CharField(max_length=100)
+
+
+    def __str__(self):
+        return self.name
 
 class Services(models.Model):
     CURRENCY=(
         ('sh','sh'),
         ('$','$')
     )
-    name=models.ForeignKey(ServiceName,on_delete=models.CASCADE)
+    name = models.ForeignKey(ServiceName, on_delete=models.CASCADE, related_name='Sname')
     price=models.IntegerField()
     currency=models.CharField(choices=CURRENCY,max_length=40)
     discriptions=models.TextField()
-    service_provider=models.ForeignKey(ServiceProviders,on_delete=models.CASCADE)
+    service_provider=models.ForeignKey(ServiceProviders,on_delete=models.CASCADE,related_name='services')
 
     def __str__(self):
-        return  '%s' % (self.name)
+        return  '%s' % (self.service_provider)
     class Meta:
         verbose_name_plural = 'Services'
+
+
+
+
 
 
 
