@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='imagecomments',
             name='image',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to='serviceProviders.Images'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='serviceProviders.Images'),
         ),
         migrations.AlterField(
             model_name='images',
@@ -28,11 +28,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='images',
             name='dislikes',
-            field=models.IntegerField(default=0),
+            field=models.IntegerField(),
         ),
         migrations.AlterField(
             model_name='images',
             name='likes',
-            field=models.IntegerField(default=0),
+            field=models.IntegerField(),
         ),
     ]

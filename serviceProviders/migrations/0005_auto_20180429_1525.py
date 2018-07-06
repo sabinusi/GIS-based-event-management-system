@@ -13,11 +13,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='videos',
             name='dislikes',
-            field=models.IntegerField(default=0),
+            field=models.IntegerField(),
         ),
         migrations.AlterField(
             model_name='videos',
             name='likes',
-            field=models.IntegerField(default=0),
+            field=models.IntegerField(),
         ),
     ]

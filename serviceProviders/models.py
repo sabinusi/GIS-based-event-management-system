@@ -17,7 +17,7 @@ class ServiceProviders(User):
         ('fourthStart','fourthStart'),
         ('fifthStart','fifthStar')
     )
-    gender=models.CharField(choices=GENDER,max_length=40)
+    gender=models.CharField(choices=GENDER,max_length=40,null=True,blank=True)
     personal_descriptions=models.TextField(blank=True,null=True)
     address=models.CharField(max_length=200)
     phone_regex = RegexValidator(regex=r'^\+255?\d{9}$',
@@ -38,8 +38,8 @@ class ServiceProviders(User):
 
 class Videos(models.Model):
     url=models.FileField(upload_to='serviceProvidersVideos/%Y/%m/%d')
-    likes=models.IntegerField(default=0)
-    dislikes=models.IntegerField(default=0)
+    likes=models.IntegerField(default=1)
+    dislikes=models.IntegerField(default=1)
 
     descriptions=models.TextField()
     service_proviser=models.ForeignKey(ServiceProviders ,on_delete=models.CASCADE)
@@ -64,11 +64,13 @@ class VideoComments(models.Model):
 
 class Images(models.Model):
     url=models.FileField(upload_to='serviceProvidersImages/%Y/%m/%d')
-    likes = models.IntegerField(default=0)
-    dislikes = models.IntegerField(default=0)
+    likes = models.IntegerField()
+    dislikes = models.IntegerField()
 
     descriptions = models.TextField(null=True)
+    created_date=models.DateField(auto_now_add=True,null=True,blank=True)
     service_proviser = models.ForeignKey(ServiceProviders, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return self.descriptions
@@ -76,13 +78,12 @@ class Images(models.Model):
         verbose_name_plural = 'Images'
 class ImageComments(models.Model):
     comments=models.TextField()
-    image=models.ForeignKey(Images,on_delete=models.CASCADE)
+    image=models.ForeignKey(Images,on_delete=models.CASCADE,related_name="image_comments")
     # delete defail 0
 
     def __str__(self):
         return self.comments
-    class Meta:
-        verbose_name_plural = 'ImageCommments'
+
 
 
 class ServiceName(models.Model):
@@ -104,9 +105,10 @@ class Services(models.Model):
     service_provider=models.ForeignKey(ServiceProviders,on_delete=models.CASCADE,related_name='services')
 
     def __str__(self):
-        return  '%s' % (self.service_provider)
+        return  '%s' % (self.name)
     class Meta:
         verbose_name_plural = 'Services'
+
 
 
 

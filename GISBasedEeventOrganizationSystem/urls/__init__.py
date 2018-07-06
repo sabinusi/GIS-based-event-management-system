@@ -5,10 +5,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from rest_framework_swagger.views import get_swagger_view
 
+
 from serviceProviders import urls
+from customers import cusstomerURL
 schema_view=get_swagger_view(title='GISBasedEeventOrganizationSystem')
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^customer/', include(cusstomerURL)),
     url(r'^swagger/', schema_view),
     url(r'^serviceProvider/',include(urls))
 ]

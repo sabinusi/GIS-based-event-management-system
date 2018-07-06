@@ -1,7 +1,8 @@
 from rest_framework import serializers
 from rest_framework.permissions import AllowAny
 
-from .models import ServiceProviders, Images, ImageComments, Videos, Services
+
+from .models import ServiceProviders, Images, ImageComments, Videos, Services,ServiceName
 
 
 class RegistrationSerialzier(serializers.ModelSerializer):
@@ -38,8 +39,15 @@ class ListServiceProvidersSerializer(serializers.ModelSerializer):
     class Meta:
         model=ServiceProviders
         fields = ['id','phone_number','gender','email','rates','personal_descriptions', 'address', 'pic_url', 'username', 'first_name', 'last_name', 'services']
+class ImageCommentsSeri(serializers.ModelSerializer):
+    class Meta:
+        model=ImageComments
+        fields=['id','comments']
 class ListImagesSerializer(serializers.ModelSerializer):
+
     permission_class=[AllowAny]
+
+    image_comments=ImageCommentsSeri(many=True)
     class Meta:
         model=Images
         fields="__all__"
@@ -48,6 +56,38 @@ class ListVideosSerializer(serializers.ModelSerializer):
     class Meta:
         model=Videos
         fields="__all__"
+
+class RecomandServiceProvider(serializers.ModelSerializer):
+    class Meta:
+        model=ServiceProviders
+        fields=['username','first_name','last_name','pic_url','id']
+class RecomendedServices(serializers.ModelSerializer):
+    permission_class=[AllowAny]
+    service_provider=RecomandServiceProvider(many=False)
+    class Meta:
+        model=Services
+        fields=['name','price','service_provider']
+class ServiceNamesSerializers(serializers.ModelSerializer):
+    permission_class=[AllowAny]
+    class Meta:
+        model=ServiceName
+        fields="__all__"
+class UpdateImageLikeSerialzers(serializers.ModelSerializer):
+    permission_class=[AllowAny]
+    class Meta:
+        model=Images
+        fields=['likes']
+class UpdateImageDislikeLikeSerialzers(serializers.ModelSerializer):
+    permission_class=[AllowAny]
+    class Meta:
+        model=Images
+        fields=['dislikes']
+class ImageCommentsSerializer(serializers.ModelSerializer):
+    permission_class=[AllowAny]
+    class Meta:
+        model=ImageComments
+        fields="__all__"
+
 
 
 
