@@ -3,11 +3,11 @@ from rest_framework import generics, serializers
 
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
 
-from serviceProviders.models import ServiceProviders, Images, Videos, Services, ServiceName, ImageComments
+from serviceProviders.models import ServiceProviders, Images, Videos, Services, ServiceName, ImageComments,VideoComments
 from serviceProviders.serviceProviderSerializers import RegistrationSerialzier, UploadImagesSerializer, \
     UploadVideoSerializer, ListServiceProvidersSerializer, ListImagesSerializer, ListVideosSerializer, \
     RecomendedServices, ServiceNamesSerializers, UpdateImageLikeSerialzers, UpdateImageDislikeLikeSerialzers, \
-    ImageCommentsSerializer
+    ImageCommentsSerializer,VideoCommentsSerializer
 
 from django.http import HttpResponse, JsonResponse
 from rest_framework import serializers
@@ -21,6 +21,9 @@ from rest_framework_jwt.settings import api_settings
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 import json
+from django.core import serializers
+
+
 from rest_framework.authtoken.models import Token
 class Registration(generics.CreateAPIView):
     permission_classes = [AllowAny]
@@ -36,13 +39,10 @@ def AuthLoginAPIView(request):
         try:
             print(username,password)
             u = ServiceProviders.objects.filter(username=username,password=password)
-            # print(u)
-            # print('hi')
-            payload = jwt_payload_handler(u)
-            # print (payload)
-            token = jwt_encode_handler(payload)
-            print (token)
-            return JsonResponse('succesfull', content_type='application/json')
+            m=serializers.serialize('json',u)
+            ob=json.loads(m)[0]
+            print(ob)
+            return HttpResponse(ob['pk'],status=HTTP_200_OK)
         except:
             return HttpResponse('failed', status=HTTP_400_BAD_REQUEST)
     else:
@@ -89,9 +89,11 @@ class CustomJWTSerializer(JSONWebTokenSerializer):
             msg = ('Account with this email/username does not exists')
             raise serializers.ValidationError(msg)
 class UploadImages(generics.CreateAPIView):
+    permission_classes = [AllowAny]
     queryset = Images
     serializer_class = UploadImagesSerializer
 class UploadVideo(generics.CreateAPIView):
+    permission_classes = [AllowAny]
     queryset = Videos
     serializer_class = UploadVideoSerializer
 class ListServiceProviders(generics.ListAPIView):
@@ -121,7 +123,7 @@ class ListVideo(generics.ListAPIView):
         images=Videos.objects.filter(service_proviser=service_provider_id)
         return  images
 
-    serializer_class = ListImagesSerializer
+    serializer_class = ListVideosSerializer
 class ListAllImages(generics.ListAPIView):
     permission_classes = [AllowAny]
     queryset = Images.objects.all()
@@ -148,21 +150,11 @@ class ServiceNames(generics.ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = ServiceNamesSerializers
     queryset = ServiceName.objects.all()
-class ImageLike(generics.ListAPIView):
+class ImageLike(generics.UpdateAPIView):
     permission_classes = [AllowAny]
+    queryset = Images.objects.all()
     serializer_class = UpdateImageLikeSerialzers
-    def get_queryset(self):
-        id=self.request.query_params.get('id',None)
-
-
-        im=Images.objects.filter(id=id)
-        im.likes=F('likes') + 1
-        im.save()
-
-        print(im)
-
-
-        return im
+    lookup_field ='id'
 
 
 
@@ -178,7 +170,10 @@ class ImageCommentsView(generics.CreateAPIView):
     serializer_class=ImageCommentsSerializer
     queryset = ImageComments.objects.all()
 
-
+class VideoCommentsView(generics.CreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class=VideoCommentsSerializer
+    queryset = VideoComments.objects.all()
 
 
 

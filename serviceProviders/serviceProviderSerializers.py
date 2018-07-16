@@ -2,7 +2,7 @@ from rest_framework import serializers
 from rest_framework.permissions import AllowAny
 
 
-from .models import ServiceProviders, Images, ImageComments, Videos, Services,ServiceName
+from .models import ServiceProviders, Images, ImageComments, Videos, Services,ServiceName,VideoComments
 
 
 class RegistrationSerialzier(serializers.ModelSerializer):
@@ -15,10 +15,8 @@ class RegistrationSerialzier(serializers.ModelSerializer):
 class UploadImagesSerializer(serializers.ModelSerializer):
     class Meta:
         model=Images
-        fields=['url','descriptions','service_proviser']
-        def save(self,validaed_data):
-            validaed_data.pop('service_proviser')
-            Images.objects.create(service_proviser=self.request.user, **validaed_data)
+        fields="__all__"
+
 class UploadVideoSerializer(serializers.ModelSerializer):
     class Meta:
         model=Videos
@@ -31,7 +29,7 @@ class SerivesSerializer(serializers.ModelSerializer):
     name=serializers.StringRelatedField(read_only=True)
     class Meta:
         model=Services
-        fields=['price','currency','discriptions','name']
+        fields=['price','currency','discriptions','name','id']
 
 class ListServiceProvidersSerializer(serializers.ModelSerializer):
     permission_classes=[AllowAny]
@@ -86,6 +84,11 @@ class ImageCommentsSerializer(serializers.ModelSerializer):
     permission_class=[AllowAny]
     class Meta:
         model=ImageComments
+        fields="__all__"
+class VideoCommentsSerializer(serializers.ModelSerializer):
+    permission_class=[AllowAny]
+    class Meta:
+        model=VideoComments
         fields="__all__"
 
 

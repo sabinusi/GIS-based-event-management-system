@@ -4,7 +4,7 @@ from rest_framework_jwt.views import ObtainJSONWebToken
 
 from serviceProviders.serviceProviderViews import Registration, CustomJWTSerializer, AuthLoginAPIView, UploadImages, \
     UploadVideo, ListServiceProviders, ListImages, ListAllImages, ListAllVideos, ListVideo, Recomandation, ServiceNames, \
-    ImageLike, ImageDisLike, ImageCommentsView, RetriveServiceProvider
+    ImageLike, ImageDisLike, ImageCommentsView, RetriveServiceProvider,VideoCommentsView,ImageCommentsView
 
 urlpatterns = [
     url(r'^registration', Registration.as_view()),
@@ -17,9 +17,11 @@ urlpatterns = [
    url(r'^allImages', ListAllImages.as_view()),
    url(r'^allVideos', ListAllVideos.as_view()),
    url(r'^serviceNames', ServiceNames.as_view()),
-   url(r'^likeImage', ImageLike.as_view()),
-   url(r'^dislikeImage', ImageDisLike.as_view()),
+   url(r'^likeImage/(?P<id>[\w-]+)', ImageLike.as_view()),
+   url(r'^dislikeImage/(?P<id>[\w-]+)', ImageDisLike.as_view()),
    url(r'^createImageComments', ImageCommentsView.as_view()),
+   url(r'^createVideoComments', VideoCommentsView.as_view()),
+
 
 
    url(r'^list', ListServiceProviders.as_view()),

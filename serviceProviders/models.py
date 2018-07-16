@@ -64,8 +64,8 @@ class VideoComments(models.Model):
 
 class Images(models.Model):
     url=models.FileField(upload_to='serviceProvidersImages/%Y/%m/%d')
-    likes = models.IntegerField()
-    dislikes = models.IntegerField()
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
 
     descriptions = models.TextField(null=True)
     created_date=models.DateField(auto_now_add=True,null=True,blank=True)
