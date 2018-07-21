@@ -8,12 +8,16 @@ from rest_framework_swagger.views import get_swagger_view
 
 from serviceProviders import urls
 from customers import cusstomerURL
+
+from rest_framework import routers
+
 schema_view=get_swagger_view(title='GISBasedEeventOrganizationSystem')
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^customer/', include(cusstomerURL)),
     url(r'^swagger/', schema_view),
     url(r'^serviceProvider/',include(urls))
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework.permissions import AllowAny
+from rest_framework import viewsets
 
 
 from .models import ServiceProviders, Images, ImageComments, Videos, Services,ServiceName,VideoComments
@@ -91,6 +92,10 @@ class VideoCommentsSerializer(serializers.ModelSerializer):
         model=VideoComments
         fields="__all__"
 
+#         updates email
+class UpdateProfile(serializers.ModelSerializer):
+    permission_classes=[AllowAny]
 
-
-
+    class Meta:
+        model=ServiceProviders
+        fields = ['phone_number','gender','email','personal_descriptions', 'address','username', 'first_name', 'last_name']

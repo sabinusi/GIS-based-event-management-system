@@ -21,6 +21,7 @@ class Customer(User):
     event_date=models.CharField(max_length=80,null=True)
     place=models.CharField(max_length=100,blank=True)
     start_time=models.CharField(max_length=50,null=True,blank=True)
+    bank=models.CharField(max_length=100,null=True)
     end_time=models.CharField(max_length=50,null=True,blank=True)
     has_payed=models.BooleanField(default=False)
     def __str__(self):

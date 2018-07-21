@@ -1,7 +1,8 @@
 from django.contrib.auth import authenticate
 from rest_framework import generics, serializers
-
+from rest_framework import viewsets
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
+from serviceProviders import serviceProviderSerializers as providerSerializer
 
 from serviceProviders.models import ServiceProviders, Images, Videos, Services, ServiceName, ImageComments,VideoComments
 from serviceProviders.serviceProviderSerializers import RegistrationSerialzier, UploadImagesSerializer, \
@@ -100,10 +101,11 @@ class ListServiceProviders(generics.ListAPIView):
     permission_classes =[AllowAny]
     queryset = ServiceProviders.objects.filter(passed=True)
     serializer_class = ListServiceProvidersSerializer
-class RetriveServiceProvider(generics.RetrieveAPIView):
+class RetriveServiceProvider(generics.ListAPIView):
     permission_classes = [AllowAny]
     queryset = ServiceProviders.objects.filter(passed=True)
     serializer_class = ListServiceProvidersSerializer
+
     lookup_field = 'id'
 class ListImages(generics.ListAPIView):
     permission_classes = [AllowAny]
@@ -176,6 +178,8 @@ class VideoCommentsView(generics.CreateAPIView):
     queryset = VideoComments.objects.all()
 
 
-
-
-
+#     updates of profile
+class UpdateProfile(generics.UpdateAPIView):
+    serializer_class = providerSerializer.UpdateProfile
+    queryset = ServiceProviders
+    lookup_field = 'id'

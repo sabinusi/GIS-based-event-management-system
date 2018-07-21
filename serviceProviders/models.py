@@ -22,7 +22,7 @@ class ServiceProviders(User):
     address=models.CharField(max_length=200)
     phone_regex = RegexValidator(regex=r'^\+255?\d{9}$',
                                  message="Phone number must be entered in the format: '+255******'. Up to 9 character is allowed.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=15, blank=True)
+    phone_number = models.CharField( max_length=15, blank=True)
     rates=models.CharField(choices=RATES,max_length=50,default='nonStar')
     pic_url=models.FileField(upload_to='serviceProviderImages/%Y/%m/%d',blank=True,null=True)
     passed=models.BooleanField(default=False)
@@ -59,11 +59,8 @@ class VideoComments(models.Model):
     class Meta:
         verbose_name_plural='videoComments'
 
-
-
-
 class Images(models.Model):
-    url=models.FileField(upload_to='serviceProvidersImages/%Y/%m/%d')
+    url=models.ImageField(upload_to='serviceProvidersImages/%Y/%m/%d')
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
 
