@@ -5,7 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "history": "^4.7.2",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-dropdown-multiselect": "^1.0.0",
