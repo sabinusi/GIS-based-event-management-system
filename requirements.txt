@@ -22,7 +22,7 @@ idna==2.6
 imagekit==1.0.6
 itsdangerous==0.24
 itypes==1.1.0
-Jinja2==2.10
+Jinja2==2.11.3
 MarkupSafe==1.0
 mod-wsgi==4.5.22
 olefile==0.44
