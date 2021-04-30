@@ -37,7 +37,7 @@ PyMySQL==0.7.11
 python-dateutil==2.6.1
 pytz==2018.3
 requests==2.18.4
-rsa==3.4.2
+rsa==4.7
 simplejson==3.13.2
 six==1.11.0
 sqlparse==0.2.4
